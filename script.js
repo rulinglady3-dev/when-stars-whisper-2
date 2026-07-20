@@ -134,6 +134,9 @@ function animate(){
 
 let time = Date.now()*0.0002;
 
+    galaxy.rotation.y += 0.0008;
+    nebula.rotation.y += 0.0002;
+
 
 camera.position.z -= 0.05;
 
@@ -179,3 +182,79 @@ window.innerHeight
 
 
 });
+
+// GALAKSİ SPİRALİ
+
+const galaxyGeometry = new THREE.BufferGeometry();
+
+const galaxyPositions = [];
+
+const arms = 4;
+const count = 8000;
+
+
+for(let i = 0; i < count; i++){
+
+    const radius = Math.random() * 500;
+
+    const spin = radius * 0.02;
+
+    const arm =
+    i % arms *
+    (Math.PI * 2 / arms);
+
+
+    const angle =
+    arm + spin + Math.random()*0.5;
+
+
+    galaxyPositions.push(
+
+        Math.cos(angle) * radius,
+
+        (Math.random()-0.5) *
+        (radius*0.05),
+
+        Math.sin(angle) * radius - 1200
+
+    );
+
+}
+
+
+
+galaxyGeometry.setAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(
+        galaxyPositions,
+        3
+    )
+);
+
+
+
+const galaxyMaterial =
+new THREE.PointsMaterial({
+
+    color:0xff9de2,
+
+    size:2,
+
+    transparent:true,
+
+    opacity:0.8,
+
+    blending:THREE.AdditiveBlending
+
+});
+
+
+
+const galaxy =
+new THREE.Points(
+    galaxyGeometry,
+    galaxyMaterial
+);
+
+
+scene.add(galaxy);
